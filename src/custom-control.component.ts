@@ -1,13 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  inject,
-  model,
-  untracked,
-} from '@angular/core';
-import { Field, form, FormValueControl } from '@angular/forms/signals';
-import { isEqual } from 'lodash-es';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Field, form } from '@angular/forms/signals';
 import { NgxControlValueAccessor } from 'ngxtension/control-value-accessor';
 
 export interface Test {
