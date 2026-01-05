@@ -25,31 +25,9 @@ export interface Test {
   imports: [Field],
   hostDirectives: [NgxControlValueAccessor],
 })
-export class CustomControlComponent implements FormValueControl<Test> {
+export class CustomControlComponent {
   protected readonly cva = inject(NgxControlValueAccessor<Test>);
-  public readonly value = model<Test>({
-    stringValue: 'ho! ho! ho!',
-    numberValue: 24,
-  });
-  protected readonly valueForm = form(this.value, {
+  protected readonly valueForm = form(this.cva.value$, {
     name: 'CustomControlComponent Form',
   });
-  constructor() {
-    // sync model to CVA
-    effect(() => {
-      const modelValue = this.value();
-      const cvaValue = untracked(this.cva.value$);
-      if (!isEqual(modelValue, cvaValue)) {
-        this.cva.value$.set(modelValue);
-      }
-    });
-    // sync CVA to model
-    effect(() => {
-      const modelValue = untracked(this.value);
-      const cvaValue = this.cva.value$();
-      if (!isEqual(modelValue, cvaValue)) {
-        this.value.set(cvaValue);
-      }
-    });
-  }
 }
