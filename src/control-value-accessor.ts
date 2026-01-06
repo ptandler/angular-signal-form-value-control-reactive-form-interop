@@ -214,14 +214,18 @@ export class NgxControlValueAccessor<T = any> implements ControlValueAccessor {
   /** @ignore */
   private readonly initialValue = (): T => {
     console.log('CVA initialValue');
-    if (this.ngControl != null) return this.ngControl.value;
-    return injectCvaDefaultValue();
+    return untracked(() => {
+      if (this.ngControl != null) return this.ngControl.value;
+      return injectCvaDefaultValue();
+    });
   };
 
   private readonly initialDisabled = (): boolean => {
     console.log('CVA initialDisabled');
-    if (this.ngControl != null) return this.ngControl.disabled ?? false;
-    return false;
+    return untracked(() => {
+      if (this.ngControl != null) return this.ngControl.disabled ?? false;
+      return false;
+    });
   };
 
   /** The value of this. If a control is present, it reflects it's value. */
