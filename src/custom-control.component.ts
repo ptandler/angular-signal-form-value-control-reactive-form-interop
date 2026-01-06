@@ -24,7 +24,4 @@ export class CustomControlComponent {
   protected readonly valueForm = form(this.cva.value$, {
     name: 'CustomControlComponent Form',
   });
-  constructor() {
-    console.log('CustomControlComponent.valueForm', this.valueForm());
-  }
 }
