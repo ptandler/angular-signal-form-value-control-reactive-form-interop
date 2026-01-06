@@ -4,6 +4,7 @@ import {
   effect,
   inject,
   Input,
+  linkedSignal,
   Output,
   signal,
   untracked,
@@ -211,34 +212,26 @@ export class NgxControlValueAccessor<T = any> implements ControlValueAccessor {
   }
 
   /** @ignore */
-  private initialValue(): T {
-    if (this.ngControl != null) {
-      try {
-        return this.ngControl.value;
-      } catch {}
-    }
+  private readonly initialValue = (): T => {
+    if (this.ngControl != null) return this.ngControl.value;
     return injectCvaDefaultValue();
-  }
+  };
 
-  private initialDisabled(): boolean {
-    if (this.ngControl != null) {
-      try {
-        return this.ngControl.disabled ?? false;
-      } catch {}
-    }
+  private readonly initialDisabled = (): boolean => {
+    if (this.ngControl != null) return this.ngControl.disabled ?? false;
     return false;
-  }
+  };
 
   /** The value of this. If a control is present, it reflects it's value. */
-  public readonly value$ = signal(this.initialValue(), {
+  public readonly value$ = linkedSignal(this.initialValue, {
     equal: (a, b) => this.compareTo(a, b),
   });
 
   /** Whether this is disabled. If a control is present, it reflects it's disabled state. */
-  public readonly disabled$ = signal(this.initialDisabled());
+  public readonly disabled$ = linkedSignal(this.initialDisabled);
 
   /**
-   * A comparator, which determines value changes. Should return true, if two values are considered semanticly equal.
+   * A comparator, which determines value changes. Should return true, if two values are considered semantically equal.
    *
    * Defaults to {@link Object.is} in order to align with change detection behavior for inputs.
    */
