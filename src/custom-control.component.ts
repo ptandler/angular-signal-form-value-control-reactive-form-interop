@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Field, form } from '@angular/forms/signals';
-import { NgxControlValueAccessor } from 'ngxtension/control-value-accessor';
+import { NgxControlValueAccessor } from './control-value-accessor';
+
+// import { NgxControlValueAccessor } from 'ngxtension/control-value-accessor';
 
 export interface Test {
   stringValue: string;

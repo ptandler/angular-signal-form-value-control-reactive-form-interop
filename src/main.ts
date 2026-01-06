@@ -8,6 +8,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Field, form } from '@angular/forms/signals';
 import { bootstrapApplication } from '@angular/platform-browser';
+import { provideCvaDefaultValue } from './control-value-accessor';
 import { CustomControlComponent, Test } from './custom-control.component';
 
 @Component({
@@ -29,6 +30,7 @@ import { CustomControlComponent, Test } from './custom-control.component';
     CustomControlComponent,
     JsonPipe,
   ],
+  providers: [provideCvaDefaultValue({ stringValue: 'a', numberValue: 9 })],
 })
 export class App {
   // for usage with [field]
