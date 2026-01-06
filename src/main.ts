@@ -8,20 +8,30 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Field, form } from '@angular/forms/signals';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideCvaDefaultValue } from './control-value-accessor';
+import { isEqual } from 'lodash-es';
+import {
+  provideCvaCompareTo,
+  provideCvaDefaultValue,
+} from './control-value-accessor';
 import { CustomControlComponent, Test } from './custom-control.component';
 
 @Component({
   selector: 'app-root',
+  providers: [
+    provideCvaDefaultValue({ stringValue: 'a', numberValue: 9 }),
+    provideCvaCompareTo(isEqual, true),
+  ],
   template: `
     <h4>Field {{ value() | json }}</h4>
     <!-- When I comment the next line, everything works fine. -->
     <custom-form-value-control [field]="valueForm" /><br />
     <!--  This can be used as work-around for now:  -->
     <!--    <custom-form-value-control [(ngModel)]="valueForm().value" /><br />-->
+    <!--
     <h4>FormControl {{ formControlValue() | json }}</h4>
     <custom-form-value-control [formControl]="formControl" />
     <br />
+-->
   `,
   imports: [
     ReactiveFormsModule,
@@ -30,7 +40,6 @@ import { CustomControlComponent, Test } from './custom-control.component';
     CustomControlComponent,
     JsonPipe,
   ],
-  providers: [provideCvaDefaultValue({ stringValue: 'a', numberValue: 9 })],
 })
 export class App {
   // for usage with [field]

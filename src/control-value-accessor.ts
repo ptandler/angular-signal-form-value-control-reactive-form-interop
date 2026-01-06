@@ -213,18 +213,24 @@ export class NgxControlValueAccessor<T = any> implements ControlValueAccessor {
 
   /** @ignore */
   private readonly initialValue = (): T => {
+    console.log('CVA initialValue');
     if (this.ngControl != null) return this.ngControl.value;
     return injectCvaDefaultValue();
   };
 
   private readonly initialDisabled = (): boolean => {
+    console.log('CVA initialDisabled');
     if (this.ngControl != null) return this.ngControl.disabled ?? false;
     return false;
   };
 
   /** The value of this. If a control is present, it reflects it's value. */
   public readonly value$ = linkedSignal(this.initialValue, {
-    equal: (a, b) => this.compareTo(a, b),
+    equal: (a, b) => {
+      let equals = this.compareTo(a, b);
+      console.log('CVA get compareTo', a, b, equals);
+      return equals;
+    },
   });
 
   /** Whether this is disabled. If a control is present, it reflects it's disabled state. */
@@ -274,10 +280,12 @@ export class NgxControlValueAccessor<T = any> implements ControlValueAccessor {
   /** The value of this. If a control is present, it reflects it's value. */
   @Input()
   public set value(value: T) {
+    console.log('CVA set value', value);
     this.value$.set(value);
   }
 
   public get value() {
+    console.log('CVA get value');
     return untracked(this.value$);
   }
 
