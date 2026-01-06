@@ -5,7 +5,7 @@ import {
   signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Field, form } from '@angular/forms/signals';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { CustomControlComponent, Test } from './custom-control.component';
@@ -16,11 +16,19 @@ import { CustomControlComponent, Test } from './custom-control.component';
     <h4>Field {{ value() | json }}</h4>
     <!-- When I comment the next line, everything works fine. -->
     <custom-form-value-control [field]="valueForm" /><br />
+    <!--  This can be used as work-around for now:  -->
+    <!--    <custom-form-value-control [(ngModel)]="valueForm().value" /><br />-->
     <h4>FormControl {{ formControlValue() | json }}</h4>
     <custom-form-value-control [formControl]="formControl" />
     <br />
   `,
-  imports: [ReactiveFormsModule, JsonPipe, CustomControlComponent, Field],
+  imports: [
+    ReactiveFormsModule,
+    FormsModule,
+    Field,
+    CustomControlComponent,
+    JsonPipe,
+  ],
 })
 export class App {
   // for usage with [field]
